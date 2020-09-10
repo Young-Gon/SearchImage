@@ -12,7 +12,7 @@ interface ImageDataDao {
      * 서버로 부터 받은 이미지 데이터를 최신순으로 찾습니다
      * @return pageing에서 사용하는 DataSource형태로 넘깁니다
      */
-    @Query("SELECT * FROM image_data WHERE keyword like '%' || :keyword || '%'")
+    @Query("SELECT * FROM image_data WHERE keyword like :keyword || '%'")
     fun findImage(keyword: String): DataSource.Factory<Int, ImageDataEntity>
 
     @Query("SELECT * FROM image_data")

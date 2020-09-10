@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.main.MainActivity">
     <data class="MainActivityBinding">
+
+        <import type="com.gondev.searchimage.model.network.State" />
+
+        <import type="java.util.List" />
         <variable
             name="vm"
             type="com.gondev.searchimage.ui.main.MainViewModel" />
@@ -19,8 +23,11 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:orientation="vertical"
+            android:paddingTop="68dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             app:items="@{vm.imageList}"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:spanCount="3"
             app:hasFixedSize="@{true}"
@@ -45,5 +52,28 @@
             android:text="@={ vm.keyword }"
             app:action="@{(v, actionId, event) -> vm.onClickSearch()}"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <include
+            layout="@layout/include_network_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:data="@{(List)vm.imageList}"
+            app:result="@{(State)vm.state}"
+            app:emptyMessage="@{vm.keyword!=null &amp;&amp; !vm.keyword.isEmpty() ?@string/empty_item : `` }"/>
+
+        <TextView
+            android:id="@+id/textViewGuidline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/guide_line_search"
+            android:textColor="@android:color/black"
+            app:drawableStartCompat="@drawable/ic_arrow_up"
+            app:layout_constraintEnd_toEndOf="@+id/editTextSearch"
+            app:layout_constraintStart_toStartOf="@+id/editTextSearch"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSearch"
+            app:visibleGone="@{vm.imageList.size()==0 &amp;&amp; (vm.keyword==null || vm.keyword.isEmpty())}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

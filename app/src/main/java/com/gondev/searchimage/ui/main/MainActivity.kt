@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import com.gondev.searchimage.R
 import com.gondev.searchimage.BR
 import com.gondev.searchimage.databinding.ImageItemBinding
 import com.gondev.searchimage.databinding.MainActivityBinding
 import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.ui.DataBindingAdapter
+import com.gondev.searchimage.ui.detail.startDetailImageActivity
+import com.gondev.searchimage.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -44,5 +47,11 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this,
             BR.vm to viewModel,
         )
+
+        viewModel.requestStartImageDetailActivity.observe(this, EventObserver { pair ->
+            val view = pair.first
+            val item = pair.second
+            startDetailImageActivity(item.id, view)
+        })
     }
 }

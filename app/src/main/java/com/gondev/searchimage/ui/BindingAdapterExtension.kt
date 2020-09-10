@@ -22,6 +22,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.transition.TransitionFactory
 import com.bumptech.glide.signature.ObjectKey
 import com.gondev.searchimage.R
+import timber.log.Timber
 
 
 @BindingAdapter("visibleGone")
@@ -59,8 +60,6 @@ fun ImageView.bindImage(src: String?, thumbnail: String?, width: Int?, height: I
         return
     }
 
-    val roundedCorners: Transformation<Bitmap> = RoundedCorners(8)
-
     var glide = Glide.with(context).load(src)
 
     // 스틸 썸네일이 없는 경우가 있다
@@ -73,7 +72,7 @@ fun ImageView.bindImage(src: String?, thumbnail: String?, width: Int?, height: I
         )
     }
 
-    glide.optionalTransform(roundedCorners)
+    glide
         .apply(getGlideRequestOption(src, width, height))
         .transition(DrawableTransitionOptions.with(DrawableAlwaysCrossFadeFactory()))
         .into(this)

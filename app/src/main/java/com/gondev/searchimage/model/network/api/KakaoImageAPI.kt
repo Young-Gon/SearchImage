@@ -20,7 +20,7 @@ interface KakaoImageAPI {
     suspend fun requestImageList(
         @Query("query") query: String,
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 20,
+        @Query("size") size: Int = 30,
         @Query("sort") sort: String = "accuracy",
     ): Result
 }
