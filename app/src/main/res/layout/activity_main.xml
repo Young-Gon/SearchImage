@@ -50,7 +50,6 @@
             android:background="@drawable/selector_round_box"
             android:drawableStart="@drawable/ic_search"
             android:text="@={ vm.keyword }"
-            app:action="@{(v, actionId, event) -> vm.onClickSearch()}"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <include

@@ -1,34 +1,36 @@
 package com.gondev.searchimage.ui.main
 
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import com.gondev.searchimage.R
 import com.gondev.searchimage.BR
+import com.gondev.searchimage.R
 import com.gondev.searchimage.databinding.ImageItemBinding
 import com.gondev.searchimage.databinding.MainActivityBinding
 import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.ui.DataBindingAdapter
-import com.gondev.searchimage.ui.detail.startDetailImageActivity
+import com.gondev.searchimage.ui.gallery.startDetailImageActivity
 import com.gondev.searchimage.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
     private val viewModel: MainViewModel by viewModels()
+    private val imm by lazy { getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        binding.recyclerView.adapter = DataBindingAdapter<ImageDataEntity, ImageItemBinding>(
+        val adapter = DataBindingAdapter<ImageDataEntity, ImageItemBinding>(
             layoutResId = R.layout.item_image,
             bindingVariableId = BR.item,
             diffCallback = object : DiffUtil.ItemCallback<ImageDataEntity>() {
@@ -47,11 +49,18 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this,
             BR.vm to viewModel,
         )
+        binding.recyclerView.adapter = adapter
 
-        viewModel.requestStartImageDetailActivity.observe(this, EventObserver { pair ->
-            val view = pair.first
-            val item = pair.second
-            startDetailImageActivity(item.id, view)
+        binding.editTextSearch.setOnEditorActionListener { textView: TextView, i: Int, keyEvent: KeyEvent? ->
+            imm.hideSoftInputFromWindow(textView.windowToken, 0)
+            true
+        }
+
+        viewModel.requestStartImageDetailActivity.observe(this, EventObserver { item ->
+            val index = adapter.currentList?.indexOf(item) ?: return@EventObserver
+            val view = (binding.recyclerView.layoutManager as GridLayoutManager).findViewByPosition(index)
+                ?: return@EventObserver
+            startDetailImageActivity(item.id, viewModel.keyword.value ?: "", view)
         })
     }
 }

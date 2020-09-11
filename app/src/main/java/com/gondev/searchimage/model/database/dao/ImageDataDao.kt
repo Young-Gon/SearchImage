@@ -1,9 +1,11 @@
 package com.gondev.searchimage.model.database.dao
 
 import androidx.paging.DataSource
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.gondev.searchimage.model.database.entity.ImageDataEntity
-import java.util.*
 
 @Dao
 interface ImageDataDao {
@@ -23,11 +25,13 @@ interface ImageDataDao {
      */
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(entity: List<ImageDataEntity>)
-}
 
-/*
-@Transaction
-suspend fun ImageDataDao.insert(entity: List<ImageDataEntity>) =
-    entity.map {
-        insert(it)
-    }.size*/
+    @Query("SELECT * FROM image_data WHERE keyword like :keyword || '%' AND id = :id")
+    suspend fun findInitialImage(keyword: String, id: Int): ImageDataEntity
+
+    @Query("SELECT * FROM image_data WHERE keyword like :keyword || '%' AND id< :key ORDER BY id DESC LIMIT :requestedLoadSize")
+    suspend fun findPrevImages(keyword: String, key: Int, requestedLoadSize: Int): List<ImageDataEntity>
+
+    @Query("SELECT * FROM image_data WHERE keyword like :keyword || '%' AND :key < id ORDER BY id ASC LIMIT :requestedLoadSize")
+    suspend fun findNextImages(keyword: String, key: Int, requestedLoadSize: Int): List<ImageDataEntity>
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.gallery.GalleryActivity">
+    <data class="GalleryActivityBinding">
+        <variable
+            name="vm"
+            type="com.gondev.searchimage.ui.gallery.GalleryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:items="@{vm.images}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onPageScrollStateChanged="@{(position) -> vm.onPageSelected(position)}"
+            tools:listitem="@layout/item_viewpager_image"/>
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#33000000"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="2"
+            android:text="@{vm.images[vm.currentPosition].display_sitename}"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:pattern="@{vm.images[vm.currentPosition].display_sitename}"
+            app:addLink="@{vm.images[vm.currentPosition].doc_url}"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDate"
+            app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/frameLayout2"
+            tools:text="Image Title" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="@android:color/white"
+            android:text="@{vm.images[vm.currentPosition].collection+`, `+vm.getDate(vm.images[vm.currentPosition].datetime)}"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+            app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+            tools:text="Blog, 2020-10-17" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupDescription"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:constraint_referenced_ids="frameLayout2,textViewTitle,textViewDate"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

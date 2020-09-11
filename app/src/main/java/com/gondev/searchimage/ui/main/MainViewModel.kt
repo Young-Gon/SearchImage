@@ -1,6 +1,5 @@
 package com.gondev.searchimage.ui.main
 
-import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
@@ -10,9 +9,11 @@ import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.model.network.State
 import com.gondev.searchimage.model.network.api.KakaoImageAPI
 import com.gondev.searchimage.util.Event
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
 /**
  * 한번에 가저올 Image 목록 크기 입니다
@@ -27,7 +28,7 @@ class MainViewModel @ViewModelInject constructor(
     /**
      * 네트워크 상태를 나타냅니다
      */
-    val state = MutableLiveData<State>(State.loading())
+    val state = MutableLiveData<State>(State.success())
 
     val keyword = MutableLiveData("")
 
@@ -106,12 +107,8 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
-    val requestStartImageDetailActivity = MutableLiveData<Event<Pair<View, ImageDataEntity>>>()
-    fun onclickItem(v: View, item: ImageDataEntity) {
-        requestStartImageDetailActivity.value = Event(v to item)
-    }
-
-    fun onClickSearch(): Boolean {
-        return true
+    val requestStartImageDetailActivity = MutableLiveData<Event<ImageDataEntity>>()
+    fun onclickItem(item: ImageDataEntity) {
+        requestStartImageDetailActivity.value = Event(item)
     }
 }
