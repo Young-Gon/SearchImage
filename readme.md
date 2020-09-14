@@ -1,8 +1,6 @@
 # Image Search
-
-1. 과제 내용:
-     - 카카오 'Daum 검색 - 이미지 검색' api를 사용하여 이미지 검색 앱을 만듭니다.
-2. 확인사항 :
+카카오 'Daum 검색 - 이미지 검색' api를 사용하여 이미지 검색 앱을 만듭니다.
+1. 확인사항 :
     - 카카오 Developer 계정은 개인 계정으로 만듭니다.
     -  EditText에 문자를 입력 후 1초가 지나면 자동으로 검색이 됩니다.
     -  검색어가 변경되면 목록 리셋 후 다시 데이터를 fetch 합니다.
@@ -15,8 +13,7 @@
        response 데이터에 출처 'display_sitename', 문서 작성 시간 'datetime'이 있을 경우 전체화면 이미지 밑에 표시해 줍니다.
        이 외 UI는 자유롭게 구성합니다.
    - 오픈소스 라이브러리는 자유롭게 사용 가능합니다.
-   - 결과물은 개인 github에 올려주시고,  labs-ma-aos@brandi.co.kr 으로 URL 공유 부탁드립니다.
-3. 우대사항
+2. 우대사항
     - RxJava 사용
     - Mvvm 패턴
     - Di(Dependency Injection)적용 - Koin,Dagger2
@@ -56,18 +53,17 @@
 라이브러리로 관리 합니다
 
 ### 화면  페키지 구성
-[ui 페키지][com.gondev.searchimage.ui] 내에
-MainActivity, GalleryActivity 두개의 화면으로 구성 되어 있습니다
-1. MainActivity: 이미지 검색 화면입니다
-2. SearchActivity: 검색한 이미지 원본화면을 표시 합니다
+[ui 페키지](/app/src/main/java/com/gondev/searchimage/ui) 내에 화면별로 구성 되어 있습니다
+1. [MainActivity](/app/src/main/java/com/gondev/searchimage/ui/main): 이미지 검색 화면입니다
+2. [GalleryActivity](/app/src/main/java/com/gondev/searchimage/ui/gallery): 검색한 이미지 원본화면을 표시 합니다
 
 ### 모델  페키지 구성
-1. network
-   1. api: Google Book API와 통신하는 서비스를 제공합니다
-   2. dto: 서버로 부터 받은 데이터를 담습니다
-2. database
-   1. entity: 디비 스키마를 구성합니다
-   2. dao: entity를 쿼리 합니다
+1. [network](/app/src/main/java/com/gondev/searchimage/model/network)
+   1. [api](/app/src/main/java/com/gondev/searchimage/model/network/api): Google Book API와 통신하는 서비스를 제공합니다
+   2. [response](/app/src/main/java/com/gondev/searchimage/model/network/response): 서버로 부터 받은 데이터를 담습니다
+2. [database](/app/src/main/java/com/gondev/searchimage/model/database)
+   1. [entity](/app/src/main/java/com/gondev/searchimage/model/database/entity): 디비 스키마를 구성합니다
+   2. [dao](/app/src/main/java/com/gondev/searchimage/model/database/dao): entity를 쿼리 합니다
 3. di.module: 위 두개의 페키지를 모듈화 하여 ViewModel에 전달 하기 위한 di 페키지입니다
 
 ## 오픈소스 라이브러리

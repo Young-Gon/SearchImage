@@ -20,6 +20,9 @@ import timber.log.Timber
  */
 const val PAGE_SIZE = 30
 
+/**
+ * 메인 화면 뷰모델입니다
+ */
 class MainViewModel @ViewModelInject constructor(
     val dao: ImageDataDao,
     val api: KakaoImageAPI
@@ -30,10 +33,20 @@ class MainViewModel @ViewModelInject constructor(
      */
     val state = MutableLiveData<State>(State.success())
 
+    /**
+     * 검색 키워드 입니다
+     */
     val keyword = MutableLiveData("")
 
+    /**
+     *  1초후에 검색을 시작하므로 검색이 시작 되기 전에 검색어가 바뀌면
+     *  네트워크 호출을 취소하고 다시 호출할 수 있도록 쿼리 스레드 핸들러를 들고 있어야 합니다
+     */
     private var job: Job? = null
 
+    /**
+     * 이미지 리스트
+     */
     val imageList = keyword.switchMap { query ->
         job?.apply {
             Timber.e("JOB CANCELED")
@@ -65,6 +78,7 @@ class MainViewModel @ViewModelInject constructor(
     }
 
     /**
+     * 페이지 오프셋
      * 검색어가 바뀔떄 마다 페이지를 1로 초기화 해준다
      */
     private var page = keyword.map {
@@ -107,6 +121,9 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
+    /**
+     * 갤러리 화면 띄우기 요청
+     */
     val requestStartImageDetailActivity = MutableLiveData<Event<ImageDataEntity>>()
     fun onclickItem(item: ImageDataEntity) {
         requestStartImageDetailActivity.value = Event(item)

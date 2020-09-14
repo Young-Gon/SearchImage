@@ -3,6 +3,9 @@ package com.gondev.searchimage.model.network
 import java.io.PrintWriter
 import java.io.StringWriter
 
+/**
+ * 네트워크 상태를 나타냅니다
+ */
 sealed class State {
 	object Loading : State()
 
