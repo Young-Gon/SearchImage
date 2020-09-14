@@ -61,7 +61,7 @@
             android:layout_marginEnd="16dp"
             android:textColor="@android:color/white"
             android:text="@{vm.images[vm.currentPosition].collection+`, `+vm.getDate(vm.images[vm.currentPosition].datetime)}"
-            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout2"
             app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             tools:text="Blog, 2020-10-17" />

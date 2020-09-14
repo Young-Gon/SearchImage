@@ -4,9 +4,6 @@ import android.app.Application
 import com.gondev.searchimage.BuildConfig
 import com.gondev.searchimage.model.network.api.KakaoImageAPI
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,12 +13,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
-import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -46,14 +37,6 @@ object NetworkModule {
                 GsonConverterFactory.create(
                     GsonBuilder()
                         .setDateFormat("yyyy-MM-dd'T'HH:mm:ssSSS")
-                        /*.registerTypeAdapter(Date::class.java, object :
-                            JsonDeserializer<Date> {
-                            override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date? {
-                                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssSSSXXX")
-                                dateFormat.timeZone=TimeZone.getTimeZone("UTC")
-                                return dateFormat.parse(json.asString)
-                            }
-                        })*/
                         .create()
                 )
             )

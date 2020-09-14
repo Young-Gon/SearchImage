@@ -20,9 +20,7 @@ class GalleryViewModel @ViewModelInject constructor(
     val dao: ImageDataDao,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    /*val images = LivePagedListBuilder(
-        dao.findImage(savedStateHandle["keyword"] ?: ""), 20
-    ).setInitialLoadKey(savedStateHandle["itemId"]).build()*/
+
     val images = LivePagedListBuilder(
         ViewPagerDataSource.Factory(
             dao,

@@ -23,11 +23,7 @@ import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.ui.DataBindingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
-fun AppCompatActivity.startDetailImageActivity(
-    itemId: Int,
-    keyword: String,
-    sharedElement: View
-) {
+fun AppCompatActivity.startGalleryActivity(itemId: Int, keyword: String, sharedElement: View) {
     val option = ActivityOptionsCompat.makeSceneTransitionAnimation(
         this,
         sharedElement,
