@@ -89,6 +89,7 @@ fun ImageView.bindImage(original: String?, thumbnail: String?) {
         glide = glide.error(
             Glide.with(context).load(thumbnail)
                 .transition(DrawableTransitionOptions.withCrossFade(300))
+                .error(R.drawable.ic_empty_image)
                 .apply(getGlideRequestOption(thumbnail))
         )
     }
