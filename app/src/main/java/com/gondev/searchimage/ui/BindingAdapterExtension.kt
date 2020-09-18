@@ -14,14 +14,18 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.transition.TransitionFactory
 import com.bumptech.glide.signature.ObjectKey
 import com.gondev.searchimage.R
+import timber.log.Timber
 import java.util.regex.Pattern
 
 
@@ -57,7 +61,7 @@ fun RecyclerView.hasFixedSize(fix: Boolean) {
 
 @BindingAdapter("thumbnail")
 fun ImageView.loadThumbnail(thumbnail: String?) {
-    if(thumbnail==null){
+    if (thumbnail == null) {
         setImageResource(R.drawable.ic_empty_image)
         return
     }
@@ -65,21 +69,31 @@ fun ImageView.loadThumbnail(thumbnail: String?) {
     Glide.with(context).load(thumbnail)
         .transition(DrawableTransitionOptions.with(DrawableAlwaysCrossFadeFactory()))
         .apply(getGlideRequestOption(thumbnail))
+        .error(R.drawable.ic_empty_image)
         .into(this)
 }
 
-@BindingAdapter("original")
-fun ImageView.bindImage(original: String?) {
+@BindingAdapter("original", "thumbnail")
+fun ImageView.bindImage(original: String?, thumbnail: String?) {
     if (original == null) {
         setImageResource(R.drawable.ic_empty_image)
         return
     }
 
-    Glide.with(context).load(original)
-        .apply(getGlideRequestOption(original).also { option ->
+    var glide =
+        Glide.with(context).load(original).apply(getGlideRequestOption(original).also { option ->
             option.override(SIZE_ORIGINAL)
         })
-        .transition(DrawableTransitionOptions.with(DrawableAlwaysCrossFadeFactory()))
+
+    if (thumbnail != null) {
+        glide = glide.error(
+            Glide.with(context).load(thumbnail)
+                .transition(DrawableTransitionOptions.withCrossFade(300))
+                .apply(getGlideRequestOption(thumbnail))
+        )
+    }
+
+    glide.transition(DrawableTransitionOptions.with(DrawableAlwaysCrossFadeFactory()))
         .into(this)
 }
 

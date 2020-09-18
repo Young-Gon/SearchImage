@@ -33,6 +33,7 @@
                 android:onClick="onClickItem"
                 android:transitionName="@{item.id+``}"
                 app:original="@{item.image_url}"
+                app:thumbnail="@{item.thumbnail_url}"
                 tools:src="@tools:sample/avatars" />
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
