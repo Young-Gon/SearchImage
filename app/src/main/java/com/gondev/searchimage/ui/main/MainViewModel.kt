@@ -60,8 +60,7 @@ class MainViewModel @ViewModelInject constructor(
 
             emitSource(
                 LivePagedListBuilder(dao.findImage(query), PAGE_SIZE)
-                    .setBoundaryCallback(object :
-                        PagedList.BoundaryCallback<ImageDataEntity>() {
+                    .setBoundaryCallback(object : PagedList.BoundaryCallback<ImageDataEntity>() {
                         override fun onZeroItemsLoaded() {
                             super.onZeroItemsLoaded()
                             loadDataFromNetwork()
@@ -93,7 +92,7 @@ class MainViewModel @ViewModelInject constructor(
     private fun loadDataFromNetwork() {
         val query = this.keyword.value
         Timber.i("search query=${query}, page=${page}")
-        if (query == null || query.isEmpty()) {
+        if (query.isNullOrEmpty()) {
             state.value = State.success()
             return
         }

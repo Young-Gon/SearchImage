@@ -21,6 +21,7 @@ import com.gondev.searchimage.databinding.GalleryActivityBinding
 import com.gondev.searchimage.databinding.ViewpagerImageItemBinding
 import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.ui.DataBindingAdapter
+import com.gondev.searchimage.ui.dataBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -49,21 +50,21 @@ fun AppCompatActivity.startGalleryActivity(itemId: Int, keyword: String, sharedE
  */
 @AndroidEntryPoint
 class GalleryActivity : AppCompatActivity() {
-    lateinit var binding: GalleryActivityBinding
+    private val binding: GalleryActivityBinding by dataBinding()
     private val viewModel: GalleryViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 트렌지션이 이미지가 호출 완료 되기전까지 중지
         supportPostponeEnterTransition()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_gallery)
+        setContentView( R.layout.activity_gallery)
+
         window.decorView.setBackgroundColor(resources.getColor(android.R.color.black))
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#33000000")))
 
         // 툴바에 뒤로가기 설정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.vm = viewModel
-        binding.lifecycleOwner = this
         // 하단 정보 레이아웃을 네비게이션 바 위로 올림
         (binding.frameLayout2.layoutParams as ConstraintLayout.LayoutParams).bottomMargin =
             getNavigationbarHeight()

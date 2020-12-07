@@ -16,6 +16,7 @@ import com.gondev.searchimage.databinding.ImageItemBinding
 import com.gondev.searchimage.databinding.MainActivityBinding
 import com.gondev.searchimage.model.database.entity.ImageDataEntity
 import com.gondev.searchimage.ui.DataBindingAdapter
+import com.gondev.searchimage.ui.dataBinding
 import com.gondev.searchimage.ui.gallery.startGalleryActivity
 import com.gondev.searchimage.util.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,15 +26,15 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: MainActivityBinding
+    private val binding: MainActivityBinding by dataBinding()
     private val viewModel: MainViewModel by viewModels()
     private val imm by lazy { getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
+
         binding.vm = viewModel
-        binding.lifecycleOwner = this
 
         // 리사이클러 뷰 아이템에서 데이터 바인딩을 돕도록 하는 아답타
         val adapter = DataBindingAdapter<ImageDataEntity, ImageItemBinding>(
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             val view = (binding.recyclerView.layoutManager as GridLayoutManager).findViewByPosition(index)
                 ?: return@EventObserver
 
-            startGalleryActivity(item.id, viewModel.keyword.value ?: "", view)
+            startGalleryActivity(item.id, viewModel.keyword.value ?: "", view.findViewById(R.id.imageView))
         })
 
         // 네트워크 에러가 났을 경우 노티

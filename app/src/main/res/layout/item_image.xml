@@ -25,7 +25,6 @@
         android:focusable="true"
         android:foreground="?selectableItemBackground"
         android:onClick="@{(v)->vm.onclickItem(item)}"
-        android:transitionName="@{item.id+``}"
         app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +37,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:transitionName="@{item.id+``}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:thumbnail="@{item.thumbnail_url}"
                 app:layout_constraintDimensionRatio="1:1"
